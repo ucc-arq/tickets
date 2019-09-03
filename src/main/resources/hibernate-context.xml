@@ -1,0 +1,87 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">		
+
+	
+	<bean id="recordDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		lazy-init="true" destroy-method="close">
+		
+		<property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+		
+		<!-- CHANGE THE DATABASE CONNECTION-->
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/ARQSOFT?useSSL=false"/>		
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+		
+		<!-- ***************************************** -->
+		
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="100" />
+		<property name="unreturnedConnectionTimeout" value="7200" />
+		<property name="debugUnreturnedConnectionStackTraces" value="true" />
+		<property name="checkoutTimeout" value="60000" />
+		<property name="maxStatements" value="0" />
+		<property name="initialPoolSize" value="1" />
+		<property name="idleConnectionTestPeriod" value="10800" />
+		<property name="maxIdleTime" value="21600" />
+		<property name="preferredTestQuery" value="SELECT 1" />
+		<property name="testConnectionOnCheckout" value="true" />
+		<property name="acquireRetryAttempts" value="5" />
+		<property name="breakAfterAcquireFailure" value="false" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">		
+		<property name="packagesToScan" value="ar.edu.ucc.arqsoft.casos.model" />
+		
+		<property name="dataSource">
+			<ref bean="recordDataSource" />
+		</property>
+		
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="hibernate.connection.isolation">2</prop>
+				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+				
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Valores por defecto no lo vemos en detalle -->
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+		</property>
+	</bean>
+
+	<bean id="transactionAdvisor"
+		class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+		<constructor-arg ref="transactionInterceptor" />
+	</bean>
+
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
+</beans>
