@@ -18,6 +18,4 @@ public interface DaoGenerico<E, ID extends Serializable> {
 	public E load(ID key);
 
 	public List<E> getAll();
-	
-	
 }
