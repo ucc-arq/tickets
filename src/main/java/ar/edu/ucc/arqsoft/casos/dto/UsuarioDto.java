@@ -10,6 +10,20 @@ public class UsuarioDto {
 	private String nombre;
 
 	private String apellido;
+	
+	
+	
+
+	public UsuarioDto() {
+		
+	}
+
+	public UsuarioDto(Long id, String nombre, String apellido) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
 
 	@JsonProperty(value= "nombre_apellido", access=Access.READ_ONLY)	
 	private String nombreApellido;

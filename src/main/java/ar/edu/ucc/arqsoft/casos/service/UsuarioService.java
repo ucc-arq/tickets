@@ -1,5 +1,8 @@
 package ar.edu.ucc.arqsoft.casos.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -64,6 +67,21 @@ public class UsuarioService {
 		dto.setId(usuario.getId());
 		
 		return dto;
+	}
+	
+	public List<UsuarioDto> getAll(){
+		List<Usuario> usuarios;
+		usuarios = usuarioDao.getAll();
+		
+		List<UsuarioDto> usuarioDtos = new ArrayList<UsuarioDto>();
+		
+		for (Usuario u : usuarios){
+			usuarioDtos.add(new UsuarioDto(u.getId(), u.getNombre(), u.getApellido()));
+		}
+		
+		
+		return usuarioDtos;
+		
 	}
 
 
