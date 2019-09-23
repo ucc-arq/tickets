@@ -49,8 +49,6 @@ public class UsuarioService {
 		usuarioDao.update(usuario);
 		
 		log.info("Se actualizo el producto: " + dto.getId());
-		
-		
 	}
 
 	public UsuarioDto getUsuarioById(Long id) {

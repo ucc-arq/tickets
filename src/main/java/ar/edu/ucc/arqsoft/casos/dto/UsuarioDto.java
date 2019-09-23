@@ -1,5 +1,8 @@
 package ar.edu.ucc.arqsoft.casos.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 public class UsuarioDto {
 
 	private Long id;
@@ -8,6 +11,8 @@ public class UsuarioDto {
 
 	private String apellido;
 
+	@JsonProperty(value= "nombre_apellido", access=Access.READ_ONLY)	
+	private String nombreApellido;
 	
 
 	public Long getId() {
@@ -34,6 +39,8 @@ public class UsuarioDto {
 		this.apellido = apellido;
 	}
 	
-	
+	public String getNombreApellido() {
+		return nombre + " " + apellido;
+	}
 
 }
