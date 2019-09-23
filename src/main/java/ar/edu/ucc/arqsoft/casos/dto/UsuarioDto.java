@@ -42,5 +42,4 @@ public class UsuarioDto {
 	public String getNombreApellido() {
 		return nombre + " " + apellido;
 	}
-
 }
