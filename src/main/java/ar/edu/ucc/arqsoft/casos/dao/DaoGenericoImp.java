@@ -48,7 +48,7 @@ public abstract class DaoGenericoImp<E, ID extends Serializable> implements DaoG
 		return session;
 	}
 
-	public void add(E entity) {
+	public void insert(E entity) {
 		currentSession().save(entity);
 	}
 
@@ -113,6 +113,7 @@ public abstract class DaoGenericoImp<E, ID extends Serializable> implements DaoG
 
 			predicateList.add(equal);
 		}
+		
 		cq = cq.where(cb.and(predicateList.toArray(new Predicate[predicateList.size()])));
 		return cq;
 	}
