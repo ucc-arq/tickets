@@ -23,7 +23,6 @@ public class UsuarioDaoTest {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	
 	Usuario usuarioTest;
 
 	// Se ejecuta siempre antes de ejecutarse cada uno de los métodos de test.
